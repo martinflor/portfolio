@@ -28,13 +28,9 @@
   --shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
-*{
-  box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
-html,body{
-  height:100%;
-}
+html,body{ height:100%; }
 
 body{
   margin:0;
@@ -58,15 +54,8 @@ body::before{
 }
 
 /* Links */
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-a:hover{
-  text-decoration:underline;
-  text-decoration-color:var(--accent);
-}
+a{ color:inherit; text-decoration:none; }
+a:hover{ text-decoration:underline; text-decoration-color:var(--accent); }
 
 /* Layout */
 .container{
@@ -131,17 +120,42 @@ a:hover{
   gap:10px;
 }
 
-.toggle{
+/* === Night toggle button (matches your screenshot) === */
+.theme-toggle{
+  width:42px;
+  height:42px;
+  border-radius:999px;
   border:1px solid var(--card-border);
-  background:transparent;
-  color:var(--text);
-  padding:9px 10px;
-  border-radius:10px;
+  background: transparent;
   cursor:pointer;
+  display:grid;
+  place-items:center;
+  padding:0;
 }
 
-.toggle:hover{
+.theme-toggle:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(185,2,9,0.18);
+}
+
+.theme-toggle:hover{
   border-color: rgba(185,2,9,0.55);
+}
+
+/* Inner icon: circle split in two halves */
+.theme-toggle .icon{
+  width:22px;
+  height:22px;
+  border-radius:999px;
+  border:1px solid rgba(22,22,22,0.30);
+  /* half dark / half light */
+  background: linear-gradient(90deg, var(--obsidian) 50%, var(--bg) 50%);
+}
+
+/* In dark mode, keep the icon readable and crisp */
+[data-theme="dark"] .theme-toggle .icon{
+  border-color: rgba(255,255,255,0.35);
+  background: linear-gradient(90deg, #f2f2f2 50%, #0f0f10 50%);
 }
 
 /* Typography */
@@ -180,11 +194,8 @@ p{
   gap:18px;
   margin-top:18px;
 }
-
 @media (max-width:860px){
-  .grid{
-    grid-template-columns:1fr;
-  }
+  .grid{ grid-template-columns:1fr; }
 }
 
 /* Cards */
@@ -194,18 +205,6 @@ p{
   border-radius:var(--radius);
   box-shadow:var(--shadow);
   padding:18px;
-}
-
-/* Badge */
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  border:1px solid var(--card-border);
-  border-radius:999px;
-  padding:8px 12px;
-  background: rgba(185,2,9,0.10);
-  font-weight:600;
 }
 
 /* Profile */
@@ -229,9 +228,7 @@ p{
   gap:6px;
 }
 
-.meta .role{
-  opacity:0.85;
-}
+.meta .role{ opacity:0.85; }
 
 .meta .links{
   display:flex;
@@ -243,7 +240,6 @@ p{
 .meta .links a{
   border-bottom:1px dashed rgba(185,2,9,0.75);
 }
-
 .meta .links a:hover{
   border-bottom-style:solid;
 }
@@ -322,4 +318,71 @@ p{
 .emph{
   color:var(--accent);
   font-weight:700;
+}
+
+/* === Right sidebar “Interests” styling === */
+.sidebar-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom: 8px;
+}
+.sidebar-title h2{ margin:0; }
+
+.sidebar-sub{
+  opacity:0.78;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 10px;
+  border-radius:999px;
+  border:1px solid var(--card-border);
+  background: rgba(255,255,255,0.04);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.chip::before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:3px;
+  background: var(--accent);
+  display:inline-block;
+  opacity:0.95;
+}
+
+/* Make the interest area feel “designed” */
+.sidebar-accent{
+  margin: 12px 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(185,2,9,0.25);
+  background: linear-gradient(180deg, rgba(185,2,9,0.10), rgba(185,2,9,0.03));
+  padding: 12px;
+}
+
+.sidebar-accent .label{
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.sidebar-accent .text{
+  font-size: 14px;
+  opacity: 0.9;
+  margin:0;
 }
