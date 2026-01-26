@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Name — Projects / Blog</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <header class="nav">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Your Name</span>
+      </div>
+
+      <nav class="navlinks">
+        <a href="index.html" id="nav-about">About</a>
+        <a href="projects.html" class="active" id="nav-projects">Projects / Blog</a>
+      </nav>
+
+      <div class="actions">
+        <button class="toggle" onclick="toggleTheme()" aria-label="Toggle night mode">
+          Night mode
+        </button>
+      </div>
+    </header>
+
+    <section style="margin-top:22px;">
+      <div class="kicker">Projects / Blog</div>
+      <h1>Things I’m building & writing.</h1>
+      <p>
+        This page is an index. Each item links to a dedicated topic page (in <span class="emph">/projects</span>).
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:18px;">
+      <h2>Featured</h2>
+      <div class="list">
+        <article class="item">
+          <h3><a href="projects/example-topic.html">Example Topic Page</a></h3>
+          <p>A short description of what the reader will learn or see.</p>
+          <div class="tags">
+            <span class="tag">Writeup</span>
+            <span class="tag">Systems</span>
+            <span class="tag">2026</span>
+          </div>
+        </article>
+
+        <article class="item">
+          <h3><a href="#">Project Name (coming soon)</a></h3>
+          <p>Describe the goal, stack, and what’s interesting.</p>
+          <div class="tags">
+            <span class="tag">Project</span>
+            <span class="tag">ML</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="footer">
+      Tip: add new pages under <span class="emph">/projects</span> and link them here.
+    </div>
+  </div>
+</body>
+</html>
