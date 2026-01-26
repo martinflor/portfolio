@@ -22,8 +22,8 @@
       </nav>
 
       <div class="actions">
-        <button class="toggle" onclick="toggleTheme()" aria-label="Toggle night mode">
-          Night mode
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle night mode" title="Toggle night mode">
+          <span class="icon" aria-hidden="true"></span>
         </button>
       </div>
     </header>
@@ -71,25 +71,20 @@
       </div>
 
       <aside class="card">
-        <div class="kicker">Now</div>
-        <h2>What I’m focusing on</h2>
-
-        <div style="margin-top:14px;">
-          <div class="badge">Interests: Energy Market · Mathematical optimization · ML/AI · Design · UI/UX · Product Development</div>
+        <div class="sidebar-title">
+          <h2>Areas I’m into</h2>
         </div>
-
-        <div style="margin-top:14px;">
-          <h2>Quick links</h2>
-          <div class="list">
-            <div class="item">
-              <h3><a href="projects.html">Projects / Blog</a></h3>
-              <p>Notes, writeups, and things I’m shipping.</p>
-            </div>
-            <div class="item">
-              <h3><a href="assets/docs/resume.pdf" target="_blank" rel="noreferrer">Resume</a></h3>
-              <p>PDF version.</p>
-            </div>
-          </div>
+        <p class="sidebar-sub">
+          Topics I enjoy working on — both technical and product-facing.
+        </p>
+      
+        <div class="sidebar-accent">
+          <div class="label">Current focus</div>
+          <p class="text">
+            Building practical tools that connect <span class="emph">math</span>,
+            <span class="emph">forecasting</span>, and
+            <span class="emph">product clarity</span>.
+          </p>
         </div>
       </aside>
     </section>
