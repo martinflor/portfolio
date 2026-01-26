@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Name — About</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <header class="nav">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Your Name</span>
+      </div>
+
+      <nav class="navlinks">
+        <a href="index.html" class="active" id="nav-about">About</a>
+        <a href="projects.html" id="nav-projects">Projects / Blog</a>
+      </nav>
+
+      <div class="actions">
+        <button class="toggle" onclick="toggleTheme()" aria-label="Toggle night mode">
+          Night mode
+        </button>
+      </div>
+    </header>
+
+    <section style="margin-top: 22px;">
+      <div class="kicker">About</div>
+      <h1>Hi, I’m <span class="emph">Your Name</span>.</h1>
+      <p>
+        A short one-liner about you. Keep it sharp and specific.
+        (e.g. “I build ML systems and clean product experiences.”)
+      </p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="profile">
+          <img class="avatar" src="assets/img/me.jpg" alt="Photo of Your Name" />
+          <div class="meta">
+            <div style="font-size:18px; font-weight:800;">Your Name</div>
+            <div class="role">Your role · <span class="emph">Your company</span></div>
+            <div class="links">
+              <a href="https://www.linkedin.com/in/YOUR-HANDLE/" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href="https://github.com/YOUR-USERNAME" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="mailto:you@email.com">Email</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <a class="btn primary" href="assets/docs/resume.pdf" target="_blank" rel="noreferrer">Open Resume (PDF)</a>
+          <a class="btn" href="assets/docs/resume.pdf" download>Download Resume</a>
+        </div>
+
+        <div style="margin-top:14px;">
+          <h2>Resume highlights</h2>
+          <div class="list">
+            <div class="item">
+              <h3>Most recent role — Company</h3>
+              <p>1–2 impact bullets. Numbers help (latency, cost, users, revenue, etc.).</p>
+            </div>
+            <div class="item">
+              <h3>Previous role — Company</h3>
+              <p>Another short set of outcomes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="card">
+        <div class="kicker">Now</div>
+        <h2>What I’m focusing on</h2>
+        <p>
+          A small “currently” section: what you’re exploring, reading, building.
+        </p>
+
+        <div style="margin-top:14px;">
+          <div class="badge">Interests: Systems · ML · Design</div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <h2>Quick links</h2>
+          <div class="list">
+            <div class="item">
+              <h3><a href="projects.html">Projects / Blog</a></h3>
+              <p>Notes, writeups, and things I’m shipping.</p>
+            </div>
+            <div class="item">
+              <h3><a href="assets/docs/resume.pdf" target="_blank" rel="noreferrer">Resume</a></h3>
+              <p>PDF version.</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="footer">
+      © <span id="year"></span> Your Name · Built with plain HTML/CSS
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
