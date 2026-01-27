@@ -225,10 +225,19 @@ Math:
     <article class="card post">
       <h2 id="context">Context</h2>
       <p>
-        This post is a first pass at exploring <span class="emph">automatic Frequency Restoration Reserve (aFRR)</span>
-        using ELIA Open Data. The goal is to extract <span class="emph">bidding-relevant signals</span> from historical behavior:
-        volume-weighted prices, acceptance probabilities, and a simple historical bid recommendation approach.
+        This post explores <span class="emph">automatic Frequency Restoration Reserve (aFRR)</span>
+        capacity bidding using ELIA Open Data. The objective is not price forecasting,
+        but <span class="emph">decision support</span>: understanding how historical clearing behavior
+        translates into acceptance probabilities and how those probabilities can inform
+        rational bid selection in a <span class="emph">pay-as-bid</span> market.
       </p>
+      
+      <p>
+        Instead of asking “what was the price?”, we focus on a more practical question:
+        <span class="emph">“At a given bid price, how likely was acceptance?”</span>
+        This shift turns historical data into a tool for risk-aware bidding.
+      </p>
+
 
       <h2 id="data">Data sources</h2>
       <div class="two-col">
@@ -247,7 +256,18 @@ Math:
           aFRR <span class="emph">capacity</span> prices are <span class="emph">pay-as-bid</span> (not pay-as-cleared).
           Each accepted bid is paid at its own bid price - which makes acceptance probability and bid selection central to strategy design.
         </p>
+
+        <p style="margin-top:10px;">
+          In pay-as-bid markets, bidding too low guarantees acceptance but caps revenue,
+          while bidding too high maximizes price but risks non-selection.
+          The optimal bid therefore balances <span class="emph">price level</span>
+          and <span class="emph">probability of acceptance</span> — which is exactly
+          what the following analysis aims to quantify empirically.
+        </p>
       </div>
+
+
+
 
       <h2 id="vw">Volume-weighted capacity prices</h2>
       <p>
@@ -277,6 +297,18 @@ Math:
           Volume-weighting helps interpret effective paid levels when volumes shift.
         </figcaption>
       </figure>
+
+      <p style="margin-top:10px;">
+        Two insights stand out. First, UP capacity prices are structurally higher and more volatile,
+        reflecting scarcity risk and asymmetric system needs. Second, prices cluster for long periods
+        before spiking sharply, suggesting that extreme events matter, but are relatively rare.
+      </p>
+      
+      <p>
+        This asymmetry explains why acceptance curves and optimal bids differ materially
+        between UP and DOWN directions later in the analysis.
+      </p>
+
 
       <h2 id="paccept">Probability of being accepted vs bidding price</h2>
       <p>
