@@ -21,7 +21,7 @@ Math:
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ELIA Open Data — aFRR (Energy & Capacity)</title>
+  <title>ELIA Open Data - aFRR Capacity</title>
 
   <!-- Your existing site styles -->
   <link rel="stylesheet" href="../assets/css/style.css" />
@@ -177,7 +177,7 @@ Math:
     <header class="nav">
       <div class="brand">
         <span class="dot"></span>
-        <span>Your Name</span>
+        <span>Florian Martin</span>
       </div>
 
       <nav class="navlinks">
@@ -195,10 +195,9 @@ Math:
     <!-- Post header -->
     <section class="post-header">
       <div class="kicker">Project / Blog</div>
-      <h1>ELIA Open Data — aFRR Energy & Capacity (Bidding Insights)</h1>
+      <h1>ELIA Open Data - aFRR Capacity (Bidding Insights)</h1>
       <div class="post-meta">
-        Datasets: energy prices <code class="inline">ods064</code> (until 2024-05-21), <code class="inline">ods166</code> (from 2024-05-22),
-        and capacity prices/awarded volumes <code class="inline">ods125</code>.
+        Datasets: aFRR capacity prices/awarded volumes <code class="inline">ods125</code>.
       </div>
 
       <div class="pillrow">
@@ -234,18 +233,10 @@ Math:
       <h2 id="data">Data sources</h2>
       <div class="two-col">
         <div class="item">
-          <h3>aFRR energy prices</h3>
-          <p>Energy activation prices come from two datasets (dataset switch in May 2024):</p>
-          <ul style="margin: 0; padding-left: 18px; line-height: 1.65;">
-            <li><code class="inline">ods064</code> — until <span class="emph">2024-05-21</span></li>
-            <li><code class="inline">ods166</code> — from <span class="emph">2024-05-22</span> onward</li>
-          </ul>
-        </div>
-        <div class="item">
           <h3>aFRR capacity prices & awarded volumes</h3>
           <p>Capacity market results come from:</p>
           <ul style="margin: 0; padding-left: 18px; line-height: 1.65;">
-            <li><code class="inline">ods125</code> — awarded capacity prices & awarded volumes</li>
+            <li><code class="inline">ods125</code> - awarded capacity prices & awarded volumes</li>
           </ul>
         </div>
       </div>
@@ -254,7 +245,7 @@ Math:
         <div class="label">Market rule that matters</div>
         <p>
           aFRR <span class="emph">capacity</span> prices are <span class="emph">pay-as-bid</span> (not pay-as-cleared).
-          Each accepted bid is paid at its own bid price — which makes acceptance probability and bid selection central to strategy design.
+          Each accepted bid is paid at its own bid price - which makes acceptance probability and bid selection central to strategy design.
         </p>
       </div>
 
@@ -367,58 +358,13 @@ Math:
         </figcaption>
       </figure>
 
-      <h3>Practical workflow (baseline)</h3>
-      <div class="list">
-        <div class="item">
-          <h3>1) Estimate acceptance curves per time block</h3>
-          <p>Compute acceptance frequencies over bid-price bins (or fit a smooth curve).</p>
-        </div>
-        <div class="item">
-          <h3>2) Compute \(\text{EV}(p)\) and identify \(p^\*\)</h3>
-          <p>Pick the price that maximizes \(\text{EV}(p)=p\cdot\mathbb{P}(\text{accept}\mid p)\) per block/direction.</p>
-        </div>
-        <div class="item">
-          <h3>3) Apply a risk adjustment</h3>
-          <p>Bid slightly below \(p^\*\) for higher acceptance, or above \(p^\*\) if you accept more misses for higher unit price.</p>
-        </div>
-      </div>
-
-      <div class="note">
-        <div class="label">Important note</div>
-        <p>
-          This is <span class="emph">not</span> a forecast. It’s a historical decision-support baseline.
-          Market conditions change, so curves should be refreshed regularly and ideally conditioned on system/tightness indicators.
-        </p>
-      </div>
-
-      <h2 id="limits">Limitations & next steps</h2>
-      <div class="two-col">
-        <div class="item">
-          <h3>Limitations</h3>
-          <ul style="margin:0; padding-left:18px; line-height: 1.7;">
-            <li>Assumes historical stationarity.</li>
-            <li>Doesn’t model structural changes explicitly.</li>
-            <li>No participant-level strategy decomposition.</li>
-          </ul>
-        </div>
-        <div class="item">
-          <h3>Next steps</h3>
-          <ul style="margin:0; padding-left:18px; line-height: 1.7;">
-            <li>Add DOWN-side commentary symmetry/asymmetry.</li>
-            <li>Condition curves on scarcity / system indicators.</li>
-            <li>Link energy price regimes (ods064/ods166) with capacity outcomes (ods125).</li>
-            <li>Package as a reproducible notebook + dashboard.</li>
-          </ul>
-        </div>
-      </div>
-
       <div class="btnrow" style="margin-top: 16px;">
         <a class="btn primary" href="../projects.html">← Back to Projects</a>
       </div>
     </article>
 
     <div class="footer">
-      © <span id="year"></span> Your Name · aFRR notes built from ELIA Open Data
+      © <span id="year"></span> Florian Martin · aFRR notes built from ELIA Open Data
     </div>
   </div>
 
