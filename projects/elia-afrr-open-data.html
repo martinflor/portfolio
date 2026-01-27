@@ -323,6 +323,20 @@ Math:
         and segment by time blocks (e.g. 00–04, 04–08, …). Toggle below to compare UP vs DOWN acceptance behavior.
       </p>
 
+      <p>
+        Acceptance probabilities are estimated empirically from historical clearing prices.
+        For each time block and direction, clearing prices are treated as an empirical distribution.
+        A bid at price \(p\) is assumed accepted whenever the historical clearing price exceeds \(p\),
+        yielding:
+      </p>
+      
+      <p>
+        \[
+          \mathbb{P}(\text{accept}\mid p) = 1 - \text{ECDF}(p)
+        \]
+      </p>
+
+
       <figure class="toggle-figure"
         data-up="../assets/img/posts/elia-afrr/p_accept_vs_bid_up.png"
         data-down="../assets/img/posts/elia-afrr/p_accept_vs_bid_down.png"
@@ -348,6 +362,14 @@ Math:
         </figcaption>
       </figure>
 
+      <p style="margin-top:10px;">
+        Acceptance curves are highly non-linear. For most blocks, a small increase in bid price
+        around the median can cause a disproportionate drop in acceptance probability.
+        Evening blocks (16–20, 20–00) consistently tolerate higher prices, while night and morning
+        blocks are more price-sensitive.
+      </p>
+
+
       <h2 id="ev">Recommended bid using historical expected value</h2>
       <p>
         Acceptance probability alone isn’t enough: a very low bid might be accepted almost always, but yields little value.
@@ -364,6 +386,14 @@ Math:
         The baseline “recommended bid” per time block (and per direction) is the \(p\) that maximizes \(\mathbb{E}(p)\),
         then adjusted based on risk appetite (prefer acceptance vs prefer price).
       </p>
+
+      <p>
+        While this is not a full profit model (activation, penalties, and portfolio effects are ignored),
+        \(p \cdot \mathbb{P}(\text{accept}\mid p)\) is a useful first-order proxy.
+        It highlights price levels where marginal price increases no longer compensate
+        for the loss in acceptance probability.
+      </p>
+
 
       <figure class="toggle-figure"
         data-up="../assets/img/posts/elia-afrr/bid_times_p_accept_up.png"
@@ -389,6 +419,27 @@ Math:
           The peak suggests a historical “sweet spot”: high enough price to matter, but not so high that acceptance collapses.
         </figcaption>
       </figure>
+
+      <p style="margin-top:10px;">
+        The peak of each curve represents a historical “sweet spot”:
+        high enough to capture value, but not so high that acceptance collapses.
+        These peaks differ substantially by time block and by direction,
+        reinforcing that a single flat bid across the day is rarely optimal.
+      </p>
+
+      <h2 id="limits">Limitations</h2>
+      <p>
+        This analysis is intentionally simple and historical. Acceptance probabilities assume
+        stationarity and do not condition on system state, imbalance forecasts, or competitor behavior.
+        Results should therefore be interpreted as <span class="emph">baseline guidance</span>,
+        not as guaranteed outcomes.
+      </p>
+      
+      <p>
+        In practice, traders may shift bids relative to these curves depending on risk appetite,
+        portfolio exposure, and expected scarcity conditions.
+      </p>
+
 
       <div class="note" style="margin-top:18px;">
         <div class="label">Try it yourself</div>
