@@ -1,15 +1,19 @@
 <!--
 File: projects/elia-afrr-open-data.html
 
-How to use:
-1) Create folder: assets/img/posts/elia-afrr/
-2) Put your figures there with these filenames (or rename below to match yours):
-   - vw_capacity_prices_4h.png
-   - p_accept_vs_bid_up.png
-   - bid_times_p_accept_up.png
-3) This page uses MathJax, so you can edit formulas in LaTeX easily:
-   - Inline: \( ... \)
-   - Block:  \[ ... \]
+Images expected (adjust filenames if yours differ):
+- ../assets/img/posts/elia-afrr/vw_capacity_prices_4h.png                 (UP & DOWN in same plot; no toggle)
+- ../assets/img/posts/elia-afrr/p_accept_vs_bid_up.png
+- ../assets/img/posts/elia-afrr/p_accept_vs_bid_down.png
+- ../assets/img/posts/elia-afrr/bid_times_p_accept_up.png
+- ../assets/img/posts/elia-afrr/bid_times_p_accept_down.png
+
+Folder suggestion:
+assets/img/posts/elia-afrr/
+
+Math:
+- Inline: \( ... \)
+- Block:  \[ ... \]
 -->
 
 <!doctype html>
@@ -19,11 +23,11 @@ How to use:
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ELIA Open Data — aFRR (Energy & Capacity)</title>
 
-  <!-- Use your existing site styles -->
+  <!-- Your existing site styles -->
   <link rel="stylesheet" href="../assets/css/style.css" />
   <script src="../assets/js/theme.js"></script>
 
-  <!-- Small post-specific styling (kept minimal, uses your theme variables) -->
+  <!-- Post-specific styling (minimal, uses your theme variables) -->
   <style>
     .post-header { margin-top: 22px; }
     .post-meta { opacity: 0.78; font-size: 14px; margin-top: 6px; }
@@ -31,11 +35,7 @@ How to use:
     .toc a { border-bottom: 1px dashed rgba(185,2,9,0.55); }
     .toc a:hover { border-bottom-style: solid; text-decoration: none; }
 
-    .post {
-      margin-top: 18px;
-      padding: 18px;
-    }
-
+    .post { margin-top: 18px; padding: 18px; }
     .post h2 { margin-top: 18px; }
     .post h3 { margin-top: 14px; font-size: 17px; }
 
@@ -91,7 +91,6 @@ How to use:
       gap:10px;
       margin-top: 10px;
     }
-
     .pill {
       display:inline-flex;
       align-items:center;
@@ -122,9 +121,44 @@ How to use:
     @media (max-width: 860px){
       .two-col { grid-template-columns: 1fr; }
     }
+
+    /* === UP/DOWN per-figure toggle === */
+    .fig-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .seg{
+      display:inline-flex;
+      border:1px solid var(--card-border);
+      border-radius:999px;
+      overflow:hidden;
+      background: rgba(255,255,255,0.03);
+    }
+    .seg button{
+      appearance:none;
+      border:0;
+      background:transparent;
+      color: var(--text);
+      padding:8px 10px;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .seg button + button{
+      border-left:1px solid var(--card-border);
+    }
+    .seg button.active{
+      background: rgba(185,2,9,0.14);
+      font-weight:700;
+    }
+    .seg button:hover{
+      background: rgba(185,2,9,0.10);
+    }
   </style>
 
-  <!-- MathJax for easy formula editing -->
+  <!-- MathJax (easy LaTeX editing) -->
   <script>
     window.MathJax = {
       tex: {
@@ -139,7 +173,7 @@ How to use:
 
 <body>
   <div class="container">
-    <!-- Navbar (same pattern as your other pages) -->
+    <!-- Navbar -->
     <header class="nav">
       <div class="brand">
         <span class="dot"></span>
@@ -163,14 +197,15 @@ How to use:
       <div class="kicker">Project / Blog</div>
       <h1>ELIA Open Data — aFRR Energy & Capacity (Bidding Insights)</h1>
       <div class="post-meta">
-        Focus: aFRR energy prices (ods064 / ods166), capacity prices & awarded volumes (ods125) — with acceptance & bidding heuristics.
+        Datasets: energy prices <code class="inline">ods064</code> (until 2024-05-21), <code class="inline">ods166</code> (from 2024-05-22),
+        and capacity prices/awarded volumes <code class="inline">ods125</code>.
       </div>
 
       <div class="pillrow">
-        <span class="pill">Energy Market</span>
-        <span class="pill">Forecasting</span>
-        <span class="pill">Mathematical optimization</span>
-        <span class="pill">Decision support</span>
+        <span class="pill">Energy Markets</span>
+        <span class="pill">aFRR</span>
+        <span class="pill">Pay-as-bid</span>
+        <span class="pill">Decision Support</span>
       </div>
 
       <div class="toc card">
@@ -191,29 +226,24 @@ How to use:
     <article class="card post">
       <h2 id="context">Context</h2>
       <p>
-        This page is a first pass at exploring <span class="emph">automatic Frequency Restoration Reserve (aFRR)</span>
-        using ELIA Open Data. The goal is to move from “looking at prices” to extracting
-        <span class="emph">bidding-relevant signals</span> from historical behavior:
-        volume-weighted prices, acceptance probabilities, and a simple bid recommendation approach.
+        This post is a first pass at exploring <span class="emph">automatic Frequency Restoration Reserve (aFRR)</span>
+        using ELIA Open Data. The goal is to extract <span class="emph">bidding-relevant signals</span> from historical behavior:
+        volume-weighted prices, acceptance probabilities, and a simple historical bid recommendation approach.
       </p>
 
       <h2 id="data">Data sources</h2>
       <div class="two-col">
         <div class="item">
           <h3>aFRR energy prices</h3>
-          <p>
-            ELIA Open Data provides energy activation prices through two datasets:
-          </p>
+          <p>Energy activation prices come from two datasets (dataset switch in May 2024):</p>
           <ul style="margin: 0; padding-left: 18px; line-height: 1.65;">
             <li><code class="inline">ods064</code> — until <span class="emph">2024-05-21</span></li>
             <li><code class="inline">ods166</code> — from <span class="emph">2024-05-22</span> onward</li>
           </ul>
         </div>
         <div class="item">
-          <h3>aFRR capacity prices & volumes</h3>
-          <p>
-            Capacity-related results (prices + awarded volumes) come from:
-          </p>
+          <h3>aFRR capacity prices & awarded volumes</h3>
+          <p>Capacity market results come from:</p>
           <ul style="margin: 0; padding-left: 18px; line-height: 1.65;">
             <li><code class="inline">ods125</code> — awarded capacity prices & awarded volumes</li>
           </ul>
@@ -224,15 +254,14 @@ How to use:
         <div class="label">Market rule that matters</div>
         <p>
           aFRR <span class="emph">capacity</span> prices are <span class="emph">pay-as-bid</span> (not pay-as-cleared).
-          That means each accepted bid is paid at its own bid price, which makes acceptance probability and
-          bid selection central to strategy design.
+          Each accepted bid is paid at its own bid price — which makes acceptance probability and bid selection central to strategy design.
         </p>
       </div>
 
       <h2 id="vw">Volume-weighted capacity prices</h2>
       <p>
-        Capacity prices can be noisy if volumes fluctuate. A common fix is to compute
-        <span class="emph">volume-weighted</span> prices:
+        Capacity prices can be noisy if awarded volumes vary. A robust way to summarize “what the system actually paid”
+        is the <span class="emph">volume-weighted capacity price</span>:
       </p>
 
       <p style="margin-top: 8px;">
@@ -242,70 +271,63 @@ How to use:
       </p>
 
       <p>
-        where \(P_i\) is the awarded capacity price and \(V_i\) the awarded volume (for a given time bucket and direction).
-        This provides a more representative view of “what the system actually paid” when volumes vary.
+        where \(P_i\) is the awarded capacity price and \(V_i\) the awarded volume (within the same time bucket and direction).
+        In this figure, UP and DOWN are shown together (so no toggle is needed).
       </p>
 
       <figure>
         <img
           src="../assets/img/posts/elia-afrr/vw_capacity_prices_4h.png"
-          alt="Volume-weighted aFRR capacity prices (4h step)"
+          alt="Volume-weighted aFRR capacity prices (UP and DOWN, 4h step)"
           loading="lazy"
         />
         <figcaption>
-          <span class="emph">Figure 1.</span> Volume-weighted capacity prices (4h step), UP vs DOWN.
-          Spikes often correspond to stressed conditions; volume-weighting helps interpret the effective paid level.
+          <span class="emph">Figure 1.</span> Volume-weighted aFRR capacity prices (4h step) with both UP & DOWN.
+          Volume-weighting helps interpret effective paid levels when volumes shift.
         </figcaption>
       </figure>
 
-      <h3>What I look for in this chart</h3>
-      <ul style="margin: 0; padding-left: 18px; line-height: 1.7;">
-        <li><span class="emph">Skew & spikes</span>: heavy-tailed behavior is typical — beware averages.</li>
-        <li><span class="emph">UP vs DOWN asymmetry</span>: different scarcity dynamics can show up clearly.</li>
-        <li><span class="emph">Regime changes</span>: clusters of spikes can indicate persistent tightness.</li>
-      </ul>
-
-      <h2 id="paccept">Probability of being accepted vs bid price</h2>
+      <h2 id="paccept">Probability of being accepted vs bidding price</h2>
       <p>
         With pay-as-bid, the key question becomes:
         <span class="emph">“If I bid at price \(p\), what is my probability of acceptance?”</span>
       </p>
-
       <p>
         We estimate:
-      </p>
-      <p>
         \[
           \mathbb{P}(\text{accept} \mid p)
         \]
-      </p>
-      <p>
-        and segment it by time-of-day blocks (e.g., 00–04, 04–08, …). In most datasets, the curve
-        typically decays non-linearly: higher bid prices reduce acceptance probability sharply beyond a certain range.
+        and segment by time blocks (e.g. 00–04, 04–08, …). Toggle below to compare UP vs DOWN acceptance behavior.
       </p>
 
-      <figure>
+      <figure class="toggle-figure"
+        data-up="../assets/img/posts/elia-afrr/p_accept_vs_bid_up.png"
+        data-down="../assets/img/posts/elia-afrr/p_accept_vs_bid_down.png"
+        data-mode="up">
+
+        <div class="fig-head">
+          <div class="kicker" style="margin:0;">Acceptance curves</div>
+          <div class="seg" role="tablist" aria-label="Toggle UP/DOWN P(accept)">
+            <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
+            <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
+          </div>
+        </div>
+
         <img
           src="../assets/img/posts/elia-afrr/p_accept_vs_bid_up.png"
-          alt="P(accept) vs bid price for aFRR capacity (UP)"
+          alt="P(accept) vs bid price for aFRR capacity (toggle UP/DOWN)"
           loading="lazy"
         />
+
         <figcaption>
-          <span class="emph">Figure 2.</span> Estimated \(\mathbb{P}(\text{accept} \mid p)\) vs bid price (UP),
-          split by time blocks. Curves usually show a steep drop: being “a bit more expensive” can quickly become “not accepted”.
+          <span class="emph">Figure 2.</span> Estimated \( \mathbb{P}(\text{accept}\mid p) \) vs bid price,
+          segmented by 4h blocks. Typically, the curve is non-linear: past some price level, acceptance can collapse quickly.
         </figcaption>
       </figure>
 
-      <h3>Interpretation</h3>
-      <ul style="margin: 0; padding-left: 18px; line-height: 1.7;">
-        <li><span class="emph">Time-of-day matters</span>: scarcity and competition differ by block.</li>
-        <li><span class="emph">Non-linear effect</span>: a small price increase can disproportionately reduce acceptance.</li>
-        <li><span class="emph">Strategic takeaway</span>: the same bid can be “good” in one block and “too high” in another.</li>
-      </ul>
-
-      <h2 id="ev">Recommended bid price using historical expected value</h2>
+      <h2 id="ev">Recommended bid using historical expected value</h2>
       <p>
-        Acceptance probability alone isn’t enough: a very low bid might be accepted almost always, but yields little revenue.
+        Acceptance probability alone isn’t enough: a very low bid might be accepted almost always, but yields little value.
         A simple historical decision rule is to maximize a proxy for expected value:
       </p>
 
@@ -316,50 +338,56 @@ How to use:
       </p>
 
       <p>
-        The best historical bid (per block, direction) is the \(p\) that maximizes \(\text{EV}(p)\), optionally adjusted
-        for risk preferences (e.g., prefer higher acceptance vs higher unit price).
+        The baseline “recommended bid” per time block (and per direction) is the \(p\) that maximizes \(\text{EV}(p)\),
+        then adjusted based on risk appetite (prefer acceptance vs prefer price).
       </p>
 
-      <figure>
+      <figure class="toggle-figure"
+        data-up="../assets/img/posts/elia-afrr/bid_times_p_accept_up.png"
+        data-down="../assets/img/posts/elia-afrr/bid_times_p_accept_down.png"
+        data-mode="up">
+
+        <div class="fig-head">
+          <div class="kicker" style="margin:0;">Bid × P(accept)</div>
+          <div class="seg" role="tablist" aria-label="Toggle UP/DOWN expected value proxy">
+            <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
+            <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
+          </div>
+        </div>
+
         <img
           src="../assets/img/posts/elia-afrr/bid_times_p_accept_up.png"
-          alt="Bid × P(accept) vs bid price for aFRR capacity (UP)"
+          alt="Bid times P(accept) vs bid price (toggle UP/DOWN)"
           loading="lazy"
         />
+
         <figcaption>
-          <span class="emph">Figure 3.</span> \(\text{EV}(p)=p \cdot \mathbb{P}(\text{accept} \mid p)\) by time block (UP).
-          The peak suggests a “sweet spot” where price is high enough to matter but not so high that acceptance collapses.
+          <span class="emph">Figure 3.</span> \(\text{EV}(p)=p\cdot \mathbb{P}(\text{accept}\mid p)\) by time block.
+          The peak suggests a historical “sweet spot”: high enough price to matter, but not so high that acceptance collapses.
         </figcaption>
       </figure>
 
-      <h3>A practical recommendation workflow</h3>
+      <h3>Practical workflow (baseline)</h3>
       <div class="list">
         <div class="item">
-          <h3>1) Build \(\mathbb{P}(\text{accept} \mid p)\) per block</h3>
-          <p>
-            From historical awarded bids, compute acceptance frequency in price bins (or a smoothed curve).
-          </p>
+          <h3>1) Estimate acceptance curves per time block</h3>
+          <p>Compute acceptance frequencies over bid-price bins (or fit a smooth curve).</p>
         </div>
         <div class="item">
-          <h3>2) Compute \(\text{EV}(p)\) and locate the maximum</h3>
-          <p>
-            Use \(\text{EV}(p)=p \cdot \mathbb{P}(\text{accept} \mid p)\) to find a baseline bid \(p^\*\).
-          </p>
+          <h3>2) Compute \(\text{EV}(p)\) and identify \(p^\*\)</h3>
+          <p>Pick the price that maximizes \(\text{EV}(p)=p\cdot\mathbb{P}(\text{accept}\mid p)\) per block/direction.</p>
         </div>
         <div class="item">
           <h3>3) Apply a risk adjustment</h3>
-          <p>
-            If you want higher acceptance, bid slightly below \(p^\*\). If you want higher unit value and can accept misses,
-            bid slightly above \(p^\*\).
-          </p>
+          <p>Bid slightly below \(p^\*\) for higher acceptance, or above \(p^\*\) if you accept more misses for higher unit price.</p>
         </div>
       </div>
 
       <div class="note">
         <div class="label">Important note</div>
         <p>
-          This is <span class="emph">not</span> a forecast. It’s a historical decision support baseline.
-          Market conditions change — you should update curves regularly and add context signals if possible.
+          This is <span class="emph">not</span> a forecast. It’s a historical decision-support baseline.
+          Market conditions change, so curves should be refreshed regularly and ideally conditioned on system/tightness indicators.
         </p>
       </div>
 
@@ -370,16 +398,16 @@ How to use:
           <ul style="margin:0; padding-left:18px; line-height: 1.7;">
             <li>Assumes historical stationarity.</li>
             <li>Doesn’t model structural changes explicitly.</li>
-            <li>Doesn’t separate participant-level strategies.</li>
+            <li>No participant-level strategy decomposition.</li>
           </ul>
         </div>
         <div class="item">
           <h3>Next steps</h3>
           <ul style="margin:0; padding-left:18px; line-height: 1.7;">
-            <li>Repeat for DOWN products.</li>
-            <li>Add conditioning on tightness / system indicators.</li>
-            <li>Link energy price regimes to capacity acceptance.</li>
-            <li>Turn “baseline” into a live-updating dashboard.</li>
+            <li>Add DOWN-side commentary symmetry/asymmetry.</li>
+            <li>Condition curves on scarcity / system indicators.</li>
+            <li>Link energy price regimes (ods064/ods166) with capacity outcomes (ods125).</li>
+            <li>Package as a reproducible notebook + dashboard.</li>
           </ul>
         </div>
       </div>
@@ -396,6 +424,42 @@ How to use:
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Toggle logic for UP/DOWN figures -->
+  <script>
+    (function () {
+      function setMode(fig, mode) {
+        const up = fig.getAttribute("data-up");
+        const down = fig.getAttribute("data-down");
+        const img = fig.querySelector("img");
+        const btnUp = fig.querySelector('button[data-set="up"]');
+        const btnDown = fig.querySelector('button[data-set="down"]');
+
+        if (!img || !up || !down) return;
+
+        fig.setAttribute("data-mode", mode);
+        img.src = (mode === "down") ? down : up;
+
+        if (btnUp && btnDown) {
+          const isDown = mode === "down";
+          btnUp.classList.toggle("active", !isDown);
+          btnDown.classList.toggle("active", isDown);
+          btnUp.setAttribute("aria-selected", String(!isDown));
+          btnDown.setAttribute("aria-selected", String(isDown));
+        }
+      }
+
+      document.querySelectorAll(".toggle-figure").forEach((fig) => {
+        setMode(fig, fig.getAttribute("data-mode") || "up");
+
+        fig.querySelectorAll("button[data-set]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            setMode(fig, btn.getAttribute("data-set"));
+          });
+        });
+      });
+    })();
   </script>
 </body>
 </html>
