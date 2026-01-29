@@ -338,14 +338,24 @@ Math:
         \]
       </p>
 
-        <figure class="toggle-figure" data-mode="up" data-kind="paccept">
-          <div class="fig-head">
-            <div class="kicker" style="margin:0;">Acceptance curves</div>
-            <div class="seg" role="tablist" aria-label="Toggle UP/DOWN P(accept)">
-              <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
-              <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
-            </div>
+       <figure class="toggle-figure" data-mode="up" data-kind="paccept">
+        <div class="fig-head">
+          <div class="kicker" style="margin:0;">Acceptance curves</div>
+          <div class="seg" role="tablist" aria-label="Toggle UP/DOWN P(accept)">
+            <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
+            <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
           </div>
+        </div>
+      
+        <!-- ✅ Plotly container (required) -->
+        <div id="pAcceptChart" style="width:100%;height:420px;"></div>
+      
+        <figcaption>
+          <span class="emph">Figure 2.</span> Estimated \( \mathbb{P}(\text{accept}\mid p) \) vs bid price,
+          segmented by 4h blocks.
+        </figcaption>
+      </figure>
+
 
       <p style="margin-top:10px;">
         Acceptance curves are highly non-linear. For most blocks, a small increase in bid price
@@ -379,14 +389,24 @@ Math:
         for the loss in acceptance probability.
       </p>
 
-        <figure class="toggle-figure" data-mode="up" data-kind="evproxy">
-          <div class="fig-head">
-            <div class="kicker" style="margin:0;">Bid × P(accept)</div>
-            <div class="seg" role="tablist" aria-label="Toggle UP/DOWN expected value proxy">
-              <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
-              <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
-            </div>
+      <figure class="toggle-figure" data-mode="up" data-kind="evproxy">
+        <div class="fig-head">
+          <div class="kicker" style="margin:0;">Bid × P(accept)</div>
+          <div class="seg" role="tablist" aria-label="Toggle UP/DOWN expected value proxy">
+            <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
+            <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
           </div>
+        </div>
+      
+        <!-- ✅ Plotly container (required) -->
+        <div id="evChart" style="width:100%;height:420px;"></div>
+      
+        <figcaption>
+          <span class="emph">Figure 3.</span> \(\mathbb{E}(p)=p\cdot \mathbb{P}(\text{accept}\mid p)\) by time block.
+          The peak suggests a historical “sweet spot”.
+        </figcaption>
+      </figure>
+
 
 
       <p style="margin-top:10px;">
