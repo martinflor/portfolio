@@ -338,20 +338,6 @@ Math:
         \]
       </p>
 
-
-      <figure class="toggle-figure"
-        data-up="../assets/img/posts/elia-afrr/p_accept_vs_bid_up.png"
-        data-down="../assets/img/posts/elia-afrr/p_accept_vs_bid_down.png"
-        data-mode="up">
-
-        <div class="fig-head">
-          <div class="kicker" style="margin:0;">Acceptance curves</div>
-          <div class="seg" role="tablist" aria-label="Toggle UP/DOWN P(accept)">
-            <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
-            <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
-          </div>
-        </div>
-
         <figure class="toggle-figure" data-mode="up" data-kind="paccept">
           <div class="fig-head">
             <div class="kicker" style="margin:0;">Acceptance curves</div>
@@ -360,21 +346,6 @@ Math:
               <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
             </div>
           </div>
-        
-          <div id="pAcceptChart" style="width:100%;height:420px;"></div>
-        
-          <figcaption>
-            <span class="emph">Figure 2.</span> Estimated \( \mathbb{P}(\text{accept}\mid p) \) vs bid price,
-            segmented by 4h blocks.
-          </figcaption>
-        </figure>
-
-
-        <figcaption>
-          <span class="emph">Figure 2.</span> Estimated \( \mathbb{P}(\text{accept}\mid p) \) vs bid price,
-          segmented by 4h blocks. Typically, the curve is non-linear: past some price level, acceptance can collapse quickly.
-        </figcaption>
-      </figure>
 
       <p style="margin-top:10px;">
         Acceptance curves are highly non-linear. For most blocks, a small increase in bid price
@@ -408,20 +379,6 @@ Math:
         for the loss in acceptance probability.
       </p>
 
-
-      <figure class="toggle-figure"
-        data-up="../assets/img/posts/elia-afrr/bid_times_p_accept_up.png"
-        data-down="../assets/img/posts/elia-afrr/bid_times_p_accept_down.png"
-        data-mode="up">
-
-        <div class="fig-head">
-          <div class="kicker" style="margin:0;">Bid × P(accept)</div>
-          <div class="seg" role="tablist" aria-label="Toggle UP/DOWN expected value proxy">
-            <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
-            <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
-          </div>
-        </div>
-
         <figure class="toggle-figure" data-mode="up" data-kind="evproxy">
           <div class="fig-head">
             <div class="kicker" style="margin:0;">Bid × P(accept)</div>
@@ -430,21 +387,7 @@ Math:
               <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
             </div>
           </div>
-        
-          <div id="evChart" style="width:100%;height:420px;"></div>
-        
-          <figcaption>
-            <span class="emph">Figure 3.</span> \(\mathbb{E}(p)=p\cdot \mathbb{P}(\text{accept}\mid p)\) by time block.
-            The peak suggests a historical “sweet spot”.
-          </figcaption>
-        </figure>
 
-
-        <figcaption>
-          <span class="emph">Figure 3.</span> \(\mathbb{E}(p)=p\cdot \mathbb{P}(\text{accept}\mid p)\) by time block.
-          The peak suggests a historical “sweet spot”: high enough price to matter, but not so high that acceptance collapses.
-        </figcaption>
-      </figure>
 
       <p style="margin-top:10px;">
         The peak of each curve represents a historical “sweet spot”:
@@ -600,7 +543,11 @@ Math:
         const layout = {
           ...base,
           margin: { l: 55, r: 20, t: 10, b: 45 },
-          xaxis: { ...base.xaxis, title: { text: "" } },
+          xaxis: {
+            ...base.xaxis,
+            title: { text: "Bid price (€/MW·h)" },
+            range: [0, 150]
+          },
           yaxis: { ...base.yaxis, title: { text: "EUR/MW/h (volume-weighted)" } },
           hovermode: "x unified"
         };
