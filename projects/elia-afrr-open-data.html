@@ -26,6 +26,9 @@ Math:
   <!-- Your existing site styles -->
   <link rel="stylesheet" href="../assets/css/style.css" />
   <script src="../assets/js/theme.js"></script>
+  <script defer src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+
 
   <!-- Post-specific styling (minimal, uses your theme variables) -->
   <style>
@@ -290,16 +293,12 @@ Math:
       </p>
 
       <figure>
-        <img
-          src="../assets/img/posts/elia-afrr/vw_capacity_prices_4h.png"
-          alt="Volume-weighted aFRR capacity prices (UP and DOWN, 4h step)"
-          loading="lazy"
-        />
+        <div id="vwChart" style="width:100%;height:420px;"></div>
         <figcaption>
           <span class="emph">Figure 1.</span> Volume-weighted aFRR capacity prices (4h step) with both UP & DOWN.
-          Volume-weighting helps interpret effective paid levels when volumes shift.
         </figcaption>
       </figure>
+
 
       <p style="margin-top:10px;">
         Two insights stand out. First, UP capacity prices are structurally higher and more volatile,
@@ -353,11 +352,23 @@ Math:
           </div>
         </div>
 
-        <img
-          src="../assets/img/posts/elia-afrr/p_accept_vs_bid_up.png"
-          alt="P(accept) vs bid price for aFRR capacity (toggle UP/DOWN)"
-          loading="lazy"
-        />
+        <figure class="toggle-figure" data-mode="up" data-kind="paccept">
+          <div class="fig-head">
+            <div class="kicker" style="margin:0;">Acceptance curves</div>
+            <div class="seg" role="tablist" aria-label="Toggle UP/DOWN P(accept)">
+              <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
+              <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
+            </div>
+          </div>
+        
+          <div id="pAcceptChart" style="width:100%;height:420px;"></div>
+        
+          <figcaption>
+            <span class="emph">Figure 2.</span> Estimated \( \mathbb{P}(\text{accept}\mid p) \) vs bid price,
+            segmented by 4h blocks.
+          </figcaption>
+        </figure>
+
 
         <figcaption>
           <span class="emph">Figure 2.</span> Estimated \( \mathbb{P}(\text{accept}\mid p) \) vs bid price,
@@ -411,11 +422,23 @@ Math:
           </div>
         </div>
 
-        <img
-          src="../assets/img/posts/elia-afrr/bid_times_p_accept_up.png"
-          alt="Bid times P(accept) vs bid price (toggle UP/DOWN)"
-          loading="lazy"
-        />
+        <figure class="toggle-figure" data-mode="up" data-kind="evproxy">
+          <div class="fig-head">
+            <div class="kicker" style="margin:0;">Bid × P(accept)</div>
+            <div class="seg" role="tablist" aria-label="Toggle UP/DOWN expected value proxy">
+              <button type="button" class="active" data-set="up" role="tab" aria-selected="true">UP</button>
+              <button type="button" data-set="down" role="tab" aria-selected="false">DOWN</button>
+            </div>
+          </div>
+        
+          <div id="evChart" style="width:100%;height:420px;"></div>
+        
+          <figcaption>
+            <span class="emph">Figure 3.</span> \(\mathbb{E}(p)=p\cdot \mathbb{P}(\text{accept}\mid p)\) by time block.
+            The peak suggests a historical “sweet spot”.
+          </figcaption>
+        </figure>
+
 
         <figcaption>
           <span class="emph">Figure 3.</span> \(\mathbb{E}(p)=p\cdot \mathbb{P}(\text{accept}\mid p)\) by time block.
@@ -482,18 +505,149 @@ Math:
   <!-- Toggle logic for UP/DOWN figures -->
   <script>
     (function () {
-      function setMode(fig, mode) {
-        const up = fig.getAttribute("data-up");
-        const down = fig.getAttribute("data-down");
-        const img = fig.querySelector("img");
+      // === Paths to CSV files (adjust if you rename files) ===
+      const DATA_BASE = "../assets/data/posts/elia-afrr/";
+    
+      const PATHS = {
+        vw: DATA_BASE + "volume_weighted_aFRR_capacity_prices_2025.csv",
+    
+        paccept: {
+          up:   DATA_BASE + "p_accept_vs_bid_price_Up_All blocks_2025-01-01_2025-12-31.csv",
+          down: DATA_BASE + "p_accept_vs_bid_price_Down_All blocks_2025-01-01_2025-12-31.csv",
+        },
+    
+        evproxy: {
+          up:   DATA_BASE + "bid_x_p_accept_vs_bid_price_Up_All blocks_2025-01-01_2025-12-31.csv",
+          down: DATA_BASE + "bid_x_p_accept_vs_bid_price_Down_All blocks_2025-01-01_2025-12-31.csv",
+        }
+      };
+    
+      // Cache loaded datasets
+      const cache = new Map();
+    
+      function cssVar(name, fallback) {
+        const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        return v || fallback;
+      }
+    
+      function plotlyTheme() {
+        // Use your CSS variables if present
+        const text = cssVar("--text", "#eaeaea");
+        const grid = cssVar("--card-border", "rgba(255,255,255,0.12)");
+        const paper = "rgba(0,0,0,0)";
+        const plotbg = "rgba(0,0,0,0)";
+    
+        return {
+          font: { color: text },
+          paper_bgcolor: paper,
+          plot_bgcolor: plotbg,
+          xaxis: { gridcolor: grid, zerolinecolor: grid },
+          yaxis: { gridcolor: grid, zerolinecolor: grid },
+          legend: { orientation: "v" }
+        };
+      }
+    
+      async function loadCsv(path) {
+        if (cache.has(path)) return cache.get(path);
+        const data = await d3.csv(path, d3.autoType);
+        cache.set(path, data);
+        return data;
+      }
+    
+      function groupByBlock(rows) {
+        const by = new Map();
+        rows.forEach(r => {
+          const b = r.block;
+          if (!by.has(b)) by.set(b, []);
+          by.get(b).push(r);
+        });
+        // Ensure consistent sort by bid price
+        for (const [k, arr] of by.entries()) {
+          arr.sort((a,b) => a.bid_price_eur_mwh - b.bid_price_eur_mwh);
+        }
+        return by;
+      }
+    
+      function makeTracesBlockLines(rows, yKey) {
+        const by = groupByBlock(rows);
+        const blocks = Array.from(by.keys()).sort(); // "00-04", "04-08", ...
+        return blocks.map(block => {
+          const arr = by.get(block);
+          return {
+            type: "scatter",
+            mode: "lines",
+            name: block,
+            x: arr.map(d => d.bid_price_eur_mwh),
+            y: arr.map(d => d[yKey]),
+            line: { shape: "hv" } // matches your step-like curves
+          };
+        });
+      }
+    
+      async function renderVW() {
+        const rows = await loadCsv(PATHS.vw);
+    
+        const x = rows.map(d => new Date(d.period_start));
+        const up = rows.map(d => d.vw_price_up);
+        const down = rows.map(d => d.vw_price_down);
+    
+        const traces = [
+          { type: "scatter", mode: "lines", name: "Volume-weighted UP", x, y: up },
+          { type: "scatter", mode: "lines", name: "Volume-weighted DOWN", x, y: down }
+        ];
+    
+        const base = plotlyTheme();
+        const layout = {
+          ...base,
+          margin: { l: 55, r: 20, t: 10, b: 45 },
+          xaxis: { ...base.xaxis, title: { text: "" } },
+          yaxis: { ...base.yaxis, title: { text: "EUR/MW/h (volume-weighted)" } },
+          hovermode: "x unified"
+        };
+    
+        Plotly.newPlot("vwChart", traces, layout, { responsive: true, displaylogo: false });
+      }
+    
+      async function renderPAccept(mode) {
+        const path = PATHS.paccept[mode];
+        const rows = await loadCsv(path);
+    
+        const traces = makeTracesBlockLines(rows, "P_accept");
+    
+        const base = plotlyTheme();
+        const layout = {
+          ...base,
+          margin: { l: 55, r: 20, t: 10, b: 50 },
+          xaxis: { ...base.xaxis, title: { text: "Bid price (€/MW·h)" } },
+          yaxis: { ...base.yaxis, title: { text: "P(accept)" }, range: [0, 1.02] },
+          hovermode: "closest"
+        };
+    
+        Plotly.react("pAcceptChart", traces, layout, { responsive: true, displaylogo: false });
+      }
+    
+      async function renderEV(mode) {
+        const path = PATHS.evproxy[mode];
+        const rows = await loadCsv(path);
+    
+        const traces = makeTracesBlockLines(rows, "bid_x_P_accept_eur_mwh");
+    
+        const base = plotlyTheme();
+        const layout = {
+          ...base,
+          margin: { l: 55, r: 20, t: 10, b: 50 },
+          xaxis: { ...base.xaxis, title: { text: "Bid price (€/MW·h)" } },
+          yaxis: { ...base.yaxis, title: { text: "Bid × P(accept) (€/MW·h)" } },
+          hovermode: "closest"
+        };
+    
+        Plotly.react("evChart", traces, layout, { responsive: true, displaylogo: false });
+      }
+    
+      function setToggleState(fig, mode) {
+        fig.setAttribute("data-mode", mode);
         const btnUp = fig.querySelector('button[data-set="up"]');
         const btnDown = fig.querySelector('button[data-set="down"]');
-
-        if (!img || !up || !down) return;
-
-        fig.setAttribute("data-mode", mode);
-        img.src = (mode === "down") ? down : up;
-
         if (btnUp && btnDown) {
           const isDown = mode === "down";
           btnUp.classList.toggle("active", !isDown);
@@ -502,17 +656,51 @@ Math:
           btnDown.setAttribute("aria-selected", String(isDown));
         }
       }
-
-      document.querySelectorAll(".toggle-figure").forEach((fig) => {
-        setMode(fig, fig.getAttribute("data-mode") || "up");
-
-        fig.querySelectorAll("button[data-set]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            setMode(fig, btn.getAttribute("data-set"));
+    
+      async function renderAll() {
+        await renderVW();
+    
+        // Initialize both toggles from their data-mode
+        document.querySelectorAll(".toggle-figure").forEach(async (fig) => {
+          const mode = fig.getAttribute("data-mode") || "up";
+          const kind = fig.getAttribute("data-kind");
+          setToggleState(fig, mode);
+    
+          if (kind === "paccept") await renderPAccept(mode);
+          if (kind === "evproxy") await renderEV(mode);
+    
+          fig.querySelectorAll("button[data-set]").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+              const next = btn.getAttribute("data-set");
+              setToggleState(fig, next);
+              if (kind === "paccept") await renderPAccept(next);
+              if (kind === "evproxy") await renderEV(next);
+            });
           });
         });
+      }
+    
+      // Re-render on theme toggle (best-effort)
+      function hookThemeButton() {
+        const t = document.querySelector(".theme-toggle");
+        if (!t) return;
+        t.addEventListener("click", () => {
+          // Theme changes might be async; re-render after a short tick
+          setTimeout(() => {
+            renderVW();
+            renderPAccept(document.querySelector('figure[data-kind="paccept"]')?.getAttribute("data-mode") || "up");
+            renderEV(document.querySelector('figure[data-kind="evproxy"]')?.getAttribute("data-mode") || "up");
+          }, 50);
+        });
+      }
+    
+      // Start once Plotly + d3 are available
+      window.addEventListener("DOMContentLoaded", () => {
+        hookThemeButton();
+        renderAll();
       });
     })();
-  </script>
+    </script>
+
 </body>
 </html>
