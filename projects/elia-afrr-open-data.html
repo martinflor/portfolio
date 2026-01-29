@@ -565,8 +565,7 @@ Math:
           margin: { l: 55, r: 20, t: 10, b: 45 },
           xaxis: {
             ...base.xaxis,
-            title: { text: "Bid price (€/MW·h)" },
-            range: [0, 150]
+            title: { text: "Bid price (€/MW·h)" }
           },
           yaxis: { ...base.yaxis, title: { text: "EUR/MW/h (volume-weighted)" } },
           hovermode: "x unified"
@@ -585,7 +584,11 @@ Math:
         const layout = {
           ...base,
           margin: { l: 55, r: 20, t: 10, b: 50 },
-          xaxis: { ...base.xaxis, title: { text: "Bid price (€/MW·h)" } },
+          xaxis: {
+            ...base.xaxis,
+            title: { text: "Bid price (€/MW·h)" },
+            range: [0, 150]
+          },
           yaxis: { ...base.yaxis, title: { text: "P(accept)" }, range: [0, 1.02] },
           hovermode: "closest"
         };
