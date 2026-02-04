@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ELIA Open Data — aFRR Capacity Backtesting (Price–Volume Replay)</title>
+  <title>ELIA Open Data - aFRR Capacity Backtesting (Price–Volume Replay)</title>
 
   <!-- Your global site styles -->
   <link rel="stylesheet" href="../assets/css/style.css" />
@@ -183,7 +183,7 @@
     <header class="nav">
       <div class="brand">
         <span class="dot"></span>
-        <span>Your Name</span>
+        <span>Florian Martin</span>
       </div>
 
       <nav class="navlinks">
@@ -203,7 +203,7 @@
       <div class="kicker">Project / Blog</div>
       <h1>aFRR Capacity Backtesting (ELIA Open Data)</h1>
       <div class="post-meta">
-        A price–volume replay model to backtest capacity bidding strategies across historical 4-hour blocks.
+        A price–volume replay model to backtest capacity bidding strategies across historical 4-hour CCTU blocks.
       </div>
 
       <div class="pillrow">
@@ -211,7 +211,6 @@
         <span class="pill">aFRR</span>
         <span class="pill">Pay-as-bid</span>
         <span class="pill">Decision Support</span>
-        <span class="pill">Python</span>
       </div>
 
       <div class="toc card">
@@ -247,7 +246,7 @@
           <ul style="margin: 0; padding-left: 18px; line-height: 1.7;">
             <li>Separate products: <span class="emph">UP</span> and <span class="emph">DOWN</span></li>
             <li>Cleared per <span class="emph">4-hour block</span> (00–04, 04–08, …, 20–24)</li>
-            <li>Each block is independent</li>
+            <li>Day-ahead 09:00 a.m.</li>
           </ul>
         </div>
         <div class="item">
@@ -276,14 +275,14 @@
 
       <div class="two-col">
         <div class="item">
-          <h3>Case A — Out of the merit order</h3>
+          <h3>Case A - Out of the merit order</h3>
           <p>
             If cheaper bids already cover the required volume, a high bid (e.g., 40 €/MW/h) is likely rejected.
             You earn 0 €, and might be priced out unnecessarily.
           </p>
         </div>
         <div class="item">
-          <h3>Case B — In the merit order</h3>
+          <h3>Case B - In the merit order</h3>
           <p>
             If your bid is below the last accepted level, you can be fully or partially awarded.
             Under pay-as-bid, you are paid at <span class="emph">your price</span>.
@@ -299,8 +298,7 @@
       <h2 id="data">3) Data sources</h2>
       <p>
         The capacity backtesting in this post is built around ELIA Open Data dataset <code class="inline">ods125</code>
-        (capacity prices and awarded volumes). For energy prices (separate topic), ELIA provides
-        <code class="inline">ods064</code> (until 2024-05-21) and <code class="inline">ods166</code> (from 2024-05-22).
+        (Individual aFRR capacity bids).
       </p>
 
       <h2 id="model">4) The price–volume replay model</h2>
