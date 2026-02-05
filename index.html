@@ -3,12 +3,72 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Florian Martin - About</title>
+  <title>Florian Martin — Energy Markets, Optimization & Product</title>
+  <meta name="description" content="Florian Martin — Business Analyst & Product Owner working on energy markets, optimization and practical data tools. Projects, writing and resume." />
+
+  <!-- Social preview -->
+  <meta property="og:title" content="Florian Martin — Energy Markets, Optimization & Product" />
+  <meta property="og:description" content="Business Analyst & Product Owner working on energy markets, optimization and practical data tools." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/img/me.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <link rel="stylesheet" href="assets/css/style.css" />
   <script src="assets/js/theme.js"></script>
+
+  <!-- Small page-level polish (optional, keeps your existing design system) -->
+  <style>
+    .skip-link{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip-link:focus{left:16px;top:16px;width:auto;height:auto;padding:10px 12px;border-radius:10px;background:var(--card);z-index:9999}
+    .hero{margin-top:22px;display:grid;gap:14px}
+    .hero h1{line-height:1.1}
+    .subline{font-size:16px;opacity:.9;max-width:70ch}
+    .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+    .btn.secondary{background:transparent;border:1px solid var(--border)}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+    .metric{padding:12px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,0.02)}
+    .metric .k{font-size:12px;opacity:.75}
+    .metric .v{font-size:16px;font-weight:800;margin-top:2px}
+    .section-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:14px}
+    .section-title small{opacity:.7}
+    .two-col{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    @media (max-width: 860px){
+      .metrics{grid-template-columns:1fr}
+      .two-col{grid-template-columns:1fr}
+    }
+    .timeline .item p{margin:6px 0 0}
+    .tagline{display:inline-flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    .tagline .chip{font-size:12px}
+  </style>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":"Florian Martin",
+    "jobTitle":"Business Analyst & Product Owner",
+    "image":"assets/img/me.jpg",
+    "email":"mailto:martinflor.eng@gmail.com",
+    "url":"index.html",
+    "sameAs":[
+      "https://www.linkedin.com/in/florian-martin-554350239/",
+      "https://github.com/martinflor"
+    ],
+    "knowsAbout":[
+      "Energy markets",
+      "Optimization",
+      "Forecasting",
+      "Product development",
+      "Data analysis"
+    ]
+  }
+  </script>
 </head>
 
 <body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
   <div class="container">
     <header class="nav">
       <div class="brand">
@@ -16,7 +76,7 @@
         <span>Florian Martin</span>
       </div>
 
-      <nav class="navlinks">
+      <nav class="navlinks" aria-label="Primary">
         <a href="index.html" class="active" id="nav-about">About</a>
         <a href="projects.html" id="nav-projects">Projects / Blog</a>
       </nav>
@@ -28,78 +88,206 @@
       </div>
     </header>
 
-    <section style="margin-top: 22px;">
-      <div class="kicker">About</div>
-      <h1>Hi, I’m <span class="emph">Florian Martin</span>.</h1>
-      <p>
-        Engineer passionate about energy markets.
-      </p>
-    </section>
+    <main id="content">
+      <!-- HERO -->
+      <section class="hero" aria-label="Intro">
+        <div class="kicker">About</div>
 
-    <section class="grid">
-      <div class="card">
-        <div class="profile">
-          <img class="avatar" src="assets/img/me.jpg" alt="Florian Martin" />
-          <div class="meta">
-            <div style="font-size:18px; font-weight:800;">Florian Martin</div>
-            <div class="role">Business Analyst & Product Owner · <span class="emph">Irex Consulting</span></div>
-            <div class="links">
-              <a href="https://www.linkedin.com/in/florian-martin-554350239/" target="_blank" rel="noreferrer">LinkedIn</a>
-              <a href="https://github.com/martinflor" target="_blank" rel="noreferrer">GitHub</a>
-              <a href="mailto:martinflor.eng@gmail.com">Email</a>
-            </div>
-          </div>
-        </div>
+        <h1>
+          Hi, I’m <span class="emph">Florian Martin</span> — I build practical tools for
+          <span class="emph">energy markets</span> using <span class="emph">optimization</span> and
+          <span class="emph">clear product thinking</span>.
+        </h1>
 
-        <div class="btnrow">
-          <a class="btn" href="assets/docs/resume.pdf" download>Download Resume</a>
-        </div>
-
-        <div style="margin-top:14px;">
-          <h2>Resume highlights</h2>
-          <div class="list">
-            <div class="item">
-              <h3>Most recent role - Irex Consulting</h3>
-              <p>Logistics and Yard management optimization. Electrolyser energy market participation optimization.</p>
-            </div>
-            <div class="item">
-              <h3>Previous role - PhD Thesis with UCLouvain & John Cockerill</h3>
-              <p>PhD student in mathematical modelization and optimization of microgrid systems applied to energy markets participation.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <aside class="card">
-        <div class="sidebar-title">
-          <h2>Areas I’m into</h2>
-        </div>
-        <p class="sidebar-sub">
-          Topics I enjoy working on both technical and product-facing.
+        <p class="subline">
+          I like problems where math meets reality: forecasting, market participation, and decision-support products that
+          help teams move faster with confidence.
         </p>
-      
-        <div class="sidebar-accent">
-          <div class="label">Current focus</div>
-          <p class="text">
-            Building practical tools that connect <span class="emph">math</span>,
-            <span class="emph">forecasting</span>, and
-            <span class="emph">product clarity</span>.
-          </p>
-        </div>
-        <div class="kicker">Interests</div>
-        <div class="chips" style="margin-top:10px;">
-          <span class="chip">Energy Market</span>
-          <span class="chip">Mathematical optimization</span>
+
+        <div class="tagline" aria-label="Quick tags">
+          <span class="chip">Energy Markets</span>
+          <span class="chip">Optimization</span>
           <span class="chip">Forecasting</span>
-          <span class="chip">ML/AI</span>
-          <span class="chip">Design</span>
-          <span class="chip">UI/UX</span>
-          <span class="chip">Product Development</span>
-          <span class="chip">PowerPoint</span>
-          <span class="chip">Business Analysis</span>
+          <span class="chip">Product</span>
+          <span class="chip">Data</span>
         </div>
-      </aside>
-    </section>
+
+        <div class="cta-row" role="group" aria-label="Primary actions">
+          <a class="btn" href="projects.html">View Projects / Blog</a>
+          <a class="btn secondary" href="assets/docs/resume.pdf" download>Download Resume</a>
+          <a class="btn secondary" href="mailto:martinflor.eng@gmail.com">Contact</a>
+        </div>
+
+        <div class="metrics" aria-label="Quick facts">
+          <div class="metric">
+            <div class="k">Current role</div>
+            <div class="v">Business Analyst & Product Owner</div>
+          </div>
+          <div class="metric">
+            <div class="k">Focus</div>
+            <div class="v">Energy markets & decision tools</div>
+          </div>
+          <div class="metric">
+            <div class="k">Strengths</div>
+            <div class="v">Modeling • Delivery • Communication</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN GRID -->
+      <section class="grid" style="margin-top: 18px;">
+        <!-- LEFT: PROFILE + STORY -->
+        <div class="card">
+          <div class="profile">
+            <img class="avatar" src="assets/img/me.jpg" alt="Portrait of Florian Martin" loading="eager" />
+            <div class="meta">
+              <div style="font-size:18px; font-weight:800;">Florian Martin</div>
+              <div class="role">Business Analyst & Product Owner · <span class="emph">Irex Consulting</span></div>
+
+              <div class="links" aria-label="Links">
+                <a href="https://www.linkedin.com/in/florian-martin-554350239/" target="_blank" rel="noreferrer">LinkedIn</a>
+                <a href="https://github.com/martinflor" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="mailto:martinflor.eng@gmail.com">Email</a>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <h2>What I do</h2>
+            <div class="list">
+              <div class="item">
+                <h3>Turn complex market rules into usable products</h3>
+                <p>
+                  I translate energy-market mechanics into clear workflows, tooling, and interfaces that stakeholders actually adopt.
+                </p>
+              </div>
+              <div class="item">
+                <h3>Build models that hold up in real operations</h3>
+                <p>
+                  Forecasting + optimization, with pragmatic constraints and readable assumptions so the model can be maintained and trusted.
+                </p>
+              </div>
+              <div class="item">
+                <h3>Communicate decisions with crisp narratives</h3>
+                <p>
+                  I care about the “why” as much as the “what”: concise writeups, strong visuals, and stakeholder-friendly trade-offs.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <h2 style="margin:0;">Resume highlights</h2>
+            <small>Recent experience & research</small>
+          </div>
+
+          <div class="list timeline" style="margin-top:10px;">
+            <div class="item">
+              <h3>Irex Consulting — Business Analyst & Product Owner</h3>
+              <p>
+                Logistics and yard-management optimization. Energy market participation optimization for electrolysers and industrial assets.
+              </p>
+            </div>
+            <div class="item">
+              <h3>PhD — UCLouvain & John Cockerill</h3>
+              <p>
+                Mathematical modeling and optimization of microgrid systems, with applications to energy market participation.
+              </p>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <h2 style="margin:0;">Featured</h2>
+            <small>Pick something to explore</small>
+          </div>
+
+          <div class="list" style="margin-top:10px;">
+            <div class="item">
+              <h3>Projects & blog posts</h3>
+              <p>
+                I share practical writeups: energy-market concepts, optimization intuition, and product-style deliverables.
+                <a href="projects.html">Browse projects →</a>
+              </p>
+            </div>
+            <div class="item">
+              <h3>Want a quick intro?</h3>
+              <p>
+                If you’re hiring or collaborating, the resume has the fastest overview.
+                <a href="assets/docs/resume.pdf" download>Download resume →</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: FOCUS + SKILLS -->
+        <aside class="card">
+          <div class="sidebar-title">
+            <h2>What I’m focused on</h2>
+          </div>
+          <p class="sidebar-sub">
+            The work I enjoy most sits between technical depth and product clarity.
+          </p>
+
+          <div class="sidebar-accent">
+            <div class="label">Current focus</div>
+            <p class="text">
+              Building decision-support tooling that connects <span class="emph">math</span>,
+              <span class="emph">forecasting</span>, and
+              <span class="emph">simple UX</span> for energy-market use cases.
+            </p>
+          </div>
+
+          <div style="margin-top:14px;">
+            <h2>How I work</h2>
+            <div class="list">
+              <div class="item">
+                <h3>Product-minded delivery</h3>
+                <p>Define scope, validate with users early, iterate fast, document assumptions.</p>
+              </div>
+              <div class="item">
+                <h3>Clean, explainable models</h3>
+                <p>Prefer readable constraints and measurable value over black-box complexity.</p>
+              </div>
+              <div class="item">
+                <h3>Strong storytelling</h3>
+                <p>Sharp slides, clear charts, and decisions framed around trade-offs.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="kicker" style="margin-top:16px;">Interests</div>
+          <div class="chips" style="margin-top:10px;">
+            <span class="chip">Energy Markets</span>
+            <span class="chip">Mathematical Optimization</span>
+            <span class="chip">Forecasting</span>
+            <span class="chip">ML/AI</span>
+            <span class="chip">Data Visualization</span>
+            <span class="chip">UI/UX</span>
+            <span class="chip">Product Development</span>
+            <span class="chip">Business Analysis</span>
+            <span class="chip">Storytelling / Slides</span>
+          </div>
+
+          <div style="margin-top:16px;">
+            <h2>Links</h2>
+            <div class="list">
+              <div class="item">
+                <h3><a href="https://www.linkedin.com/in/florian-martin-554350239/" target="_blank" rel="noreferrer">LinkedIn</a></h3>
+                <p>Career timeline, roles, and recommendations.</p>
+              </div>
+              <div class="item">
+                <h3><a href="https://github.com/martinflor" target="_blank" rel="noreferrer">GitHub</a></h3>
+                <p>Code, experiments, and technical artifacts.</p>
+              </div>
+              <div class="item">
+                <h3><a href="mailto:martinflor.eng@gmail.com">Email</a></h3>
+                <p>Open to collaboration and opportunities.</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
 
     <div class="footer">
       © <span id="year"></span> Florian Martin
