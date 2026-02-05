@@ -262,8 +262,7 @@
           <a href="#data">Data sources</a> ·
           <a href="#model">Price–volume replay model</a> ·
           <a href="#examples">Merit order examples (interactive)</a> ·
-          <a href="#backtest">Backtesting across blocks</a> ·
-          <a href="#recommend">Using historical data to guide bids</a> ·
+          <a href="#recommend">Conclusion</a> ·
           <a href="#limits">Limitations & next steps</a> ·
           <a href="#app">Try it yourself</a>
         </p>
@@ -286,7 +285,7 @@
           <ul style="margin: 0; padding-left: 18px; line-height: 1.7;">
             <li>Separate products: <span class="emph">UP</span> and <span class="emph">DOWN</span></li>
             <li>Cleared per <span class="emph">4-hour block</span> (00–04, 04–08, …, 20–24)</li>
-            <li>Each block is independent</li>
+            <li>Bidding day-ahead 09:00 a.m.</li>
           </ul>
         </div>
         <div class="item">
@@ -501,17 +500,13 @@
         </div>
       </div>
       
-      <h2 id="examples">5) Merit order examples (interactive)</h2>
-      <p>
-        Below are the interactive reproductions of the “merit order” examples (slides 2–4),
-        generated with Plotly using the same replay logic you implemented in code. :contentReference[oaicite:0]{index=0}
-      </p>
+      <h2 id="examples">5) Merit order examples</h2>
 
       <!-- Slide 2 -->
       <div class="embed-wrap">
         <div class="embed-head">
           <div>
-            <p class="title">Merit Order Example - Historical stack</p>
+            <p class="title">Historical stack</p>
             <p class="subtitle">
               The historical full offer stack for one 4h block, with the “last accepted bid” reference.
             </p>
@@ -584,7 +579,8 @@
 
       <h2 id="recommend">6) Conclusion</h2>
       <p>
-        Now, it is possible to backtest, using historical data of ELIA and historical bidding prices of an asset, the acceptance and the effect on the merit order curves of an asset bid. The model can test single bids or complex bidding curves. However, the replay model presented here is not aligned perfectly with the current algorithm used by the platform PICASSO (e.g. no cross-zonal capacity is taken into account).
+        Now, it is possible to backtest, using historical data of ELIA and historical bidding prices of an asset, the acceptance and the effect on the merit order curves of an asset bid. The model can test single bids or complex bidding curves and replay the past to provide acceptance regarding aFRR capacity bids. It can serve as decision-support by modelling potential capacity revenues. 
+        However, the replay model presented here is not aligned perfectly with the current algorithm used by the platform PICASSO (e.g. no cross-zonal capacity is taken into account) and represents a simplification.
       </p>
 
 
